@@ -1,0 +1,45 @@
+{
+    "name": "TouchControls",
+    "maps": [
+        {
+            "name": "Ball",
+            "id": "fbbf098e-2b82-411d-ba85-e37c7996cb25",
+            "actions": [
+                {
+                    "name": "Tap",
+                    "type": "Button",
+                    "id": "722185f8-0207-4b77-9179-9a95662715ee",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "c2ddd44d-8869-4669-a982-e5772031798e",
+                    "path": "<Touchscreen>/primaryTouch/tap",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ac56e8d9-401e-43e5-8d8f-c7376e561cc1",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
