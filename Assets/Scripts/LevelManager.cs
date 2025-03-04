@@ -6,13 +6,13 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     public TextMeshProUGUI levelText;
-    public PotSpawner spawner;
-    private int _currentLevel;
+    public BasketSpawner spawner;
+    private int _currentLevel = 74;
 
     private void Start()
     {
         EventManager.StartListening(EventNames.Basket, OnBasket);
-        spawner.SpawnPot();
+        LoadLevel();
     }
 
     private void OnBasket()
@@ -20,13 +20,38 @@ public class LevelManager : MonoBehaviour
         _currentLevel++;
         levelText.text = _currentLevel.ToString();
         CheckSpawnedPots();
+        GameTimer.Instance.ResetTimer();
     }
 
     private void CheckSpawnedPots()
     {
-        if (PotSpawner.spawnedPots.Count == 0)
+        if (BasketSpawner.spawnedBaskets.Count == 0)
         {
-            spawner.SpawnPot();
+            LoadLevel();
+        }
+    }
+
+    private void LoadLevel()
+    {
+        int basketCount = 1; // Varsayılan 1 pota
+        bool hasBomb = false;
+        bool basketsMove = false;
+        bool basketsDisappear = false;
+        bool hasTimer = false;
+        
+        // Seviye kuralları
+        if (_currentLevel >= 10) basketCount = 2;
+        if (_currentLevel >= 10) hasBomb = true;
+        if (_currentLevel >= 20) basketCount = 3;
+        if (_currentLevel >= 30) basketsMove = true;
+        if (_currentLevel >= 50) basketsDisappear = true;
+        if (_currentLevel >= 75) hasTimer = true;
+
+        spawner.SpawnPot(basketCount, basketsMove, basketsDisappear);
+        
+        if (hasTimer)
+        {
+            GameTimer.Instance.StartTimer();
         }
     }
 

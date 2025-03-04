@@ -4,13 +4,17 @@ public class CameraBounds : MonoBehaviour
 {
     public Camera mainCamera;
     public BoxCollider leftWall, rightWall, topWall, bottomWall;
-
+    public static Vector3 leftWallPos, rightWallPos, topWallPos, bottomWallPos;
     private void Start()
     {
         if (mainCamera == null)
             mainCamera = Camera.main;
 
         AdjustColliders();
+        leftWallPos = leftWall.transform.position;
+        rightWallPos = rightWall.transform.position;
+        bottomWallPos = bottomWall.transform.position;
+        topWallPos = topWall.transform.position;
     }
 
     private void AdjustColliders()
