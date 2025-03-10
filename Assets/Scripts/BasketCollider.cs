@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BasketCollider : MonoBehaviour
 {
+    public GameObject bomb;
     private bool _isCollided;
     private void OnTriggerExit(Collider other)
     {
@@ -13,6 +14,13 @@ public class BasketCollider : MonoBehaviour
         BasketSpawner.spawnedBaskets.Remove(transform.parent.gameObject);
         EventManager.EmitEvent(EventNames.Basket);
         _isCollided = true;
-        Destroy(transform.parent.gameObject);
+        GetComponentInParent<Animator>().SetTrigger("Die");
+        Destroy(transform.parent.gameObject, 1f);
+
+        if (bomb)
+        {
+            bomb.GetComponent<Animator>().SetTrigger("Die");
+            Destroy(bomb, 1f);
+        }
     }
 }

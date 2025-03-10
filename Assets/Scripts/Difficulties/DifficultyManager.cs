@@ -1,0 +1,76 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Difficulties;
+using TigerForge;
+using UnityEngine;
+using Random = UnityEngine.Random;
+
+public class DifficultyManager : MonoBehaviour
+{
+    public RocketManager rocketManager;
+    public GameObject bombPrefab;
+    private List<Difficulty> _availableDifficulties = new List<Difficulty>();
+    private Difficulty _activeRotation;
+    private int _level;
+
+    private void Start()
+    {
+        EventManager.StartListening(EventNames.LevelUpgraded, OnLevelUpgrade);
+        EventManager.StartListening(EventNames.LevelLoaded, OnLevelLoaded);
+    }
+
+    private void OnLevelUpgrade()
+    {
+        _level = EventManager.GetInt(EventNames.LevelUpgraded);
+        GameTimer.Instance.ResetTimer();
+        
+        CheckDifficulties();
+    }
+
+    private void OnLevelLoaded()
+    {
+        PickDifficulty();
+    }
+
+    private void PickDifficulty()
+    {
+        _activeRotation?.ApplyDifficulty(BasketSpawner.spawnedBaskets);
+        
+        if (_level < 75)
+        {
+            _availableDifficulties.Last().ApplyDifficulty(BasketSpawner.spawnedBaskets);
+        }
+        else
+        {
+            _availableDifficulties[Random.Range(0, _availableDifficulties.Count - 1)].ApplyDifficulty(BasketSpawner.spawnedBaskets);
+        }
+    }
+
+    private void CheckDifficulties()
+    {
+        switch (_level)
+        {
+            case 10:
+                _availableDifficulties.Add(new BombDifficulty(bombPrefab));
+                _activeRotation = new RotationDifficulty();
+                rocketManager.ActivateRocket();
+                break;
+            case 30:
+                _availableDifficulties.Add(new MovingDifficulty());
+                break;
+            case 50:
+                _availableDifficulties.Add(new DisappearDifficulty());
+                break;
+            case 75:
+                GameTimer.Instance.StartTimer();
+                break;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.StopListening(EventNames.LevelUpgraded, OnLevelUpgrade);
+        EventManager.StopListening(EventNames.LevelLoaded, OnLevelLoaded);
+    }
+}

@@ -16,7 +16,7 @@ public class BasketSpawner : MonoBehaviour
         spawnedBaskets = new List<GameObject>();
     }
 
-    public void SpawnPot(int basketCount, bool moving, bool disappear)
+    public void SpawnPot(int basketCount)
     {
         for (int i = 0; i < basketCount; i++)
         {
@@ -35,18 +35,9 @@ public class BasketSpawner : MonoBehaviour
                 }
 
             } while (IsOverlapping(spawnPos));
-
-            var basket = Instantiate(basketPrefab, spawnPos, Quaternion.Euler(new Vector3(-75f, 0, 0)));
+            
+            var basket = Instantiate(basketPrefab, spawnPos, basketPrefab.transform.rotation);
             spawnedBaskets.Add(basket);
-            if (moving)
-            {
-                basket.AddComponent<MovingBasket>();
-            }
-
-            if (disappear)
-            {
-                basket.AddComponent<DisappearingBasket>();
-            }
         }
     }
     

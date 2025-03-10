@@ -7,7 +7,7 @@ public class LevelManager : MonoBehaviour
 {
     public TextMeshProUGUI levelText;
     public BasketSpawner spawner;
-    private int _currentLevel = 74;
+    private int _currentLevel = 9;
 
     private void Start()
     {
@@ -19,6 +19,7 @@ public class LevelManager : MonoBehaviour
     {
         _currentLevel++;
         levelText.text = _currentLevel.ToString();
+        EventManager.EmitEventData(EventNames.LevelUpgraded, _currentLevel);
         CheckSpawnedPots();
         GameTimer.Instance.ResetTimer();
     }
@@ -28,31 +29,18 @@ public class LevelManager : MonoBehaviour
         if (BasketSpawner.spawnedBaskets.Count == 0)
         {
             LoadLevel();
+            EventManager.EmitEvent(EventNames.LevelLoaded);
         }
     }
 
     private void LoadLevel()
     {
-        int basketCount = 1; // Varsayılan 1 pota
-        bool hasBomb = false;
-        bool basketsMove = false;
-        bool basketsDisappear = false;
-        bool hasTimer = false;
+        int basketCount = 1;
         
-        // Seviye kuralları
         if (_currentLevel >= 10) basketCount = 2;
-        if (_currentLevel >= 10) hasBomb = true;
         if (_currentLevel >= 20) basketCount = 3;
-        if (_currentLevel >= 30) basketsMove = true;
-        if (_currentLevel >= 50) basketsDisappear = true;
-        if (_currentLevel >= 75) hasTimer = true;
 
-        spawner.SpawnPot(basketCount, basketsMove, basketsDisappear);
-        
-        if (hasTimer)
-        {
-            GameTimer.Instance.StartTimer();
-        }
+        spawner.SpawnPot(basketCount);
     }
 
     private void OnDestroy()
