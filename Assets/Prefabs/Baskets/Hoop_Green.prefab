@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2073403097003326679}
-  - component: {fileID: 4224099436811708485}
   - component: {fileID: 1828537990447098531}
   - component: {fileID: 8009002004874402964}
   - component: {fileID: 5384589476892163743}
@@ -30,34 +29,12 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.60876137, y: 0, z: 0, w: 0.7933534}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.55, y: 0.55, z: 0.5}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.55, y: 0.55, z: 0.50000006}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5854022633950901359}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -75, y: 0, z: 0}
---- !u!95 &4224099436811708485
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6952174701860839522}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 82dcb084f1bfec241b58b543ff86ca7a, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!33 &1828537990447098531
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -199,3 +176,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 499a0b3ae3e00ec4d8c7b3c0bfecd1e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bomb: {fileID: 0}
+  rotationSpeed: 100

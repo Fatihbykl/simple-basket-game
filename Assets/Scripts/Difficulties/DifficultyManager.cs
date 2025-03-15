@@ -10,6 +10,8 @@ public class DifficultyManager : MonoBehaviour
 {
     public RocketManager rocketManager;
     public GameObject bombPrefab;
+    public GameObject barrierPrefab;
+    public GameObject wheelPrefab;
     private List<Difficulty> _availableDifficulties = new List<Difficulty>();
     private Difficulty _activeRotation;
     private int _level;
@@ -37,13 +39,13 @@ public class DifficultyManager : MonoBehaviour
     {
         _activeRotation?.ApplyDifficulty(BasketSpawner.spawnedBaskets);
         
-        if (_level < 75)
+        if (_level < 100)
         {
             _availableDifficulties.Last().ApplyDifficulty(BasketSpawner.spawnedBaskets);
         }
         else
         {
-            _availableDifficulties[Random.Range(0, _availableDifficulties.Count - 1)].ApplyDifficulty(BasketSpawner.spawnedBaskets);
+            _availableDifficulties[Random.Range(0, _availableDifficulties.Count)].ApplyDifficulty(BasketSpawner.spawnedBaskets);
         }
     }
 
@@ -63,6 +65,15 @@ public class DifficultyManager : MonoBehaviour
                 _availableDifficulties.Add(new DisappearDifficulty());
                 break;
             case 75:
+                _availableDifficulties.Add(new WheelDifficulty(wheelPrefab));
+                break;
+            case 94:
+                _availableDifficulties.Add(new ShrinkingBasketsDifficulty());
+                break;
+            case 95:
+                _availableDifficulties.Add(new DoorDifficulty(barrierPrefab));
+                break;
+            case 100:
                 GameTimer.Instance.StartTimer();
                 break;
         }

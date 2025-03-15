@@ -9,6 +9,7 @@ public class RocketManager : MonoBehaviour
     public GameObject rocketPrefab;
     public GameObject warningSign;
     public float rocketSpeed;
+    public float rocketRotationSpeed;
     public float waitBeforeSign;
     public float flyTime;
     public float delayTime;
@@ -17,14 +18,11 @@ public class RocketManager : MonoBehaviour
     private GameObject _warningSign;
     private bool _isRocketLeft;
     private bool _isRocketMoving;
-    private void Start()
-    {
-        
-    }
 
     private void Update()
     {
         if (!_isRocketMoving || !_rocket) return;
+        _rocket.transform.Rotate(0f, rocketRotationSpeed * Time.deltaTime, 0f);
         if (_isRocketLeft)
         {
             _rocket.transform.position += new Vector3(rocketSpeed * Time.deltaTime, 0, 0);
@@ -100,6 +98,6 @@ public class RocketManager : MonoBehaviour
 
     private Quaternion GetRotation()
     {
-        return Quaternion.Euler(_isRocketLeft ? new Vector3(0, -90f, 0) : new Vector3(0, 90f, 0));
+        return Quaternion.Euler(_isRocketLeft ? new Vector3(0, 0, -90f) : new Vector3(0, 0, 90f));
     }
 }

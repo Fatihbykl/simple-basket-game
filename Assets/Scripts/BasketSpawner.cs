@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
@@ -16,9 +17,11 @@ public class BasketSpawner : MonoBehaviour
         spawnedBaskets = new List<GameObject>();
     }
 
-    public void SpawnPot(int basketCount)
+    public async UniTask SpawnPot(int basketCount)
     {
-        for (int i = 0; i < basketCount; i++)
+        ClearBaskets();
+        await UniTask.WaitForSeconds(1f);
+        for (var i = 0; i < basketCount; i++)
         {
             Vector3 spawnPos;
             int attempts = 0;
@@ -39,6 +42,15 @@ public class BasketSpawner : MonoBehaviour
             var basket = Instantiate(basketPrefab, spawnPos, basketPrefab.transform.rotation);
             spawnedBaskets.Add(basket);
         }
+    }
+
+    private void ClearBaskets()
+    {
+        foreach (var basket in spawnedBaskets)
+        {
+            basket.GetComponentInChildren<BasketCollider>().Die();
+        }
+        spawnedBaskets.Clear();
     }
     
     bool IsOverlapping(Vector3 newPosition)
