@@ -8,7 +8,7 @@ public class LevelManager : MonoBehaviour
 {
     public TextMeshProUGUI levelText;
     public BasketSpawner spawner;
-    private int _currentLevel = 92;
+    [SerializeField] private int _currentLevel = 92;
 
     private void Start()
     {

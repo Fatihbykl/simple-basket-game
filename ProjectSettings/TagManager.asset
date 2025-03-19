@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Wall
   - Ball
+  - Bomb
+  - Rocket
   layers:
   - Default
   - TransparentFX

@@ -7,23 +7,36 @@ public class HealthManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI healthText;
     [SerializeField] private int health;
+    private Ball _ball;
 
     private void Start()
     {
-        EventManager.StartListening(EventNames.BallFell, OnBallFell);
+        EventManager.StartListening(EventNames.BallFell, OnGetDamage);
+        EventManager.StartListening(EventNames.BombExploded, OnGetDamage);
+        EventManager.StartListening(EventNames.RocketCollided, OnGetDamage);
+        EventManager.StartListening(EventNames.Revived, OnRevived);
         UpdateHealthUI();
+        _ball = GetComponent<Ball>();
     }
 
-    private void OnBallFell()
+    private void OnGetDamage()
     {
         health--;
         if (health <= 0)
         {
-            Debug.Log("Game Over!");
+            EventManager.EmitEvent(EventNames.GameOver);
+            return;
         }
         
         UpdateHealthUI();
-        transform.gameObject.transform.position = new Vector3(0, 4f, 0);
+        _ball.ResetBallPosition();
+    }
+
+    private void OnRevived()
+    {
+        _ball.ResetBallPosition();
+        health++;
+        UpdateHealthUI();
     }
 
     private void UpdateHealthUI()
@@ -33,6 +46,8 @@ public class HealthManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        EventManager.StopListening(EventNames.BallFell, OnBallFell);
+        EventManager.StopListening(EventNames.BallFell, OnGetDamage);
+        EventManager.StopListening(EventNames.BombExploded, OnGetDamage);
+        EventManager.StopListening(EventNames.RocketCollided, OnGetDamage);
     }
 }

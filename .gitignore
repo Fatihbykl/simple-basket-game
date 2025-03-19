@@ -28,6 +28,14 @@
 .vs/
 .vscode/
 .idea/
+Key/
+Assets/Scripts/Keys.cs
+Assets/Blitz
+Assets/GeneratedLocalRepo
+Assets/GoogleMobileAds
+Assets/GooglePlayGames
+Assets/ExternalDependencyManager
+Assets/Plugins/Android
 
 # Gradle cache directory
 .gradle/

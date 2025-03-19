@@ -8,8 +8,8 @@ public class Bomb : MonoBehaviour
     {
         if (other.CompareTag("Ball"))
         {
-            Debug.Log("Boom");
             EventManager.EmitEvent(EventNames.BombExploded);
+            Destroy(gameObject);
         }
     }
 }
