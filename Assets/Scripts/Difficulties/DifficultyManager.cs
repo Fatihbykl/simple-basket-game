@@ -10,8 +10,12 @@ public class DifficultyManager : MonoBehaviour
 {
     public RocketManager rocketManager;
     public GameObject bombPrefab;
-    public GameObject barrierPrefab;
+    public GameObject fireBarrierPrefab;
+    public GameObject barrierPreparePrefab;
+    public float barrierPrepareTime;
+    public float barrierFireTime;
     public GameObject wheelPrefab;
+    public GameObject disappearEffectPrefab;
     private List<Difficulty> _availableDifficulties = new List<Difficulty>();
     private Difficulty _activeRotation;
     private int _level;
@@ -62,7 +66,7 @@ public class DifficultyManager : MonoBehaviour
                 _availableDifficulties.Add(new MovingDifficulty());
                 break;
             case 50:
-                _availableDifficulties.Add(new DisappearDifficulty());
+                _availableDifficulties.Add(new DisappearDifficulty(disappearEffectPrefab));
                 break;
             case 75:
                 _availableDifficulties.Add(new WheelDifficulty(wheelPrefab));
@@ -71,7 +75,7 @@ public class DifficultyManager : MonoBehaviour
                 _availableDifficulties.Add(new ShrinkingBasketsDifficulty());
                 break;
             case 95:
-                _availableDifficulties.Add(new DoorDifficulty(barrierPrefab));
+                _availableDifficulties.Add(new FireBarrierDifficulty(fireBarrierPrefab, barrierPreparePrefab, barrierPrepareTime, barrierFireTime));
                 break;
             case 100:
                 GameTimer.Instance.StartTimer();

@@ -7,6 +7,7 @@ public class Rocket : MonoBehaviour
     {
         if (other.CompareTag("Ball"))
         {
+            EventManager.EmitEventData(EventNames.RocketCollided, gameObject.transform.position);
             EventManager.EmitEvent(EventNames.RocketCollided);
             transform.position = new Vector3(0f, 100f, 0f);
         }

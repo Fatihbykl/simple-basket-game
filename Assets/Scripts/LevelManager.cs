@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    public TextMeshProUGUI levelText;
     public BasketSpawner spawner;
     [SerializeField] private int _currentLevel = 92;
 
@@ -23,10 +22,10 @@ public class LevelManager : MonoBehaviour
 
     private async UniTask LoadLevel()
     {
+        Debug.Log(BasketSpawner.spawnedBaskets.Count);
         if (BasketSpawner.spawnedBaskets.Count != 0) { return; }
-        
+
         _currentLevel++;
-        levelText.text = _currentLevel.ToString();
         EventManager.EmitEventData(EventNames.LevelUpgraded, _currentLevel);
         
         int basketCount = 1;

@@ -2,19 +2,19 @@ using System;
 using DG.Tweening;
 using TigerForge;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class BasketCollider : MonoBehaviour
 {
     public GameObject bomb;
+    public GameObject particlePrefab;
     public float rotationSpeed;
     private bool _isCollided;
     private Vector3 _normalScale = new Vector3(0.55f, 0.55f, 0.5f);
-    private bool _enteredFromTop = false;
-    private bool _enteredFromBottom = false;
-    private bool _exitedFromTop = false;
-    private bool _exitedFromBottom = false;
-    private int _triggerCounter;
-    private float _lastExit;
+    private Vector2 _entryPosition;
+    private Vector2 _entryVelocity;
+    private bool _hasEntered = false;
+    private float _perfectThreshold = 0.15f;
 
     private void Start()
     {
@@ -27,85 +27,86 @@ public class BasketCollider : MonoBehaviour
         transform.parent.Rotate(0f, 0f, rotationSpeed *  Time.deltaTime);
     }
 
-    private void Scored()
+    void OnTriggerEnter(Collider other)
     {
-        if (_isCollided) { return; }
+        if (other.CompareTag("Ball"))
+        {
+            var ballRb = other.GetComponent<Rigidbody>();
 
-        BasketSpawner.spawnedBaskets.Remove(transform.parent.gameObject);
-        EventManager.EmitEvent(EventNames.Basket);
-        _isCollided = true;
-        Die();
+            _entryPosition = other.transform.position;
+            _entryVelocity = ballRb.linearVelocity;
+            _hasEntered = true;
+        }
     }
 
-    public void TriggerEnter(string side)
+    void OnTriggerExit(Collider other)
     {
-        if (Time.time - _lastExit > 1f)
+        if (other.CompareTag("Ball") && _hasEntered)
         {
-            return;
-        }
-        switch (side)
-        {
-            case "Bottom":
-                _enteredFromBottom = true;
-                break;
-            case "Top":
-                _enteredFromTop = true;
-                break;
-        }
+            Rigidbody ballRb = other.GetComponent<Rigidbody>();
 
-        _triggerCounter++;
-        if(_triggerCounter == 3) { CheckBasket(); }
+            Vector2 exitPosition = other.transform.position;
+            Vector2 exitVelocity = ballRb.linearVelocity;
+
+            if (IsValidBasket(_entryPosition, _entryVelocity, exitPosition, exitVelocity))
+            {
+                bool isPerfect = IsPerfectBasket(_entryVelocity, exitVelocity);
+                GetComponent<BoxCollider>().enabled = false;
+                EventManager.EmitEvent(EventNames.Score);
+                EventManager.SetData("isPerfect", isPerfect);
+                EventManager.EmitEvent(EventNames.Combo, gameObject);
+                Die();
+                EventManager.EmitEvent(EventNames.Basket);
+                CreateFloatingText(isPerfect);
+            }
+            _hasEntered = false;
+        }
     }
 
-    public void TriggerExit(string side)
+    private void CreateFloatingText(bool isPerfect)
     {
-        if (_triggerCounter == 0) { return; }
-        switch (side)
-        {
-            case "Bottom":
-                _exitedFromBottom = true;
-                break;
-            case "Top":
-                _exitedFromTop = true;
-                break;
-        }
+        var destination = transform.position;
+        destination.x += (Random.value - 0.5f) / 3f;
+        destination.y += Random.value;
+        destination.z += (Random.value - 0.5f) / 3f;
 
-        _lastExit = Time.time;
-        _triggerCounter++;
-        if(_triggerCounter == 3) { CheckBasket(); }
+        if (isPerfect)
+        {
+            DynamicTextManager.CreateText(destination, "PERFECT!", DynamicTextManager.perfectBasketData);
+        }
     }
 
-    private void CheckBasket()
+    private bool IsValidBasket(Vector2 entryPos, Vector2 entryVel, Vector2 exitPos, Vector2 exitVel)
     {
-        if (_enteredFromTop && _exitedFromTop && _enteredFromBottom)
-        {
-            Scored();
-            Debug.Log("Basket! Üstten girip alttan çıktı.");
-        }
+        float hoopY = transform.position.y;
+        bool enteredFromTop = entryPos.y > hoopY;
+        bool enteredFromBottom = entryPos.y < hoopY;
+        bool exitedFromTop = exitPos.y > hoopY;
+        bool exitedFromBottom = exitPos.y < hoopY;
 
-        else if (_enteredFromBottom && _exitedFromBottom && _enteredFromTop)
-        {
-            Scored();
-            Debug.Log("Basket! Alttan girip üstten çıktı.");
-        }
+        if ((enteredFromTop && exitedFromBottom) || (enteredFromBottom && exitedFromTop))
+            return true;
 
-        ResetTriggers();
+        return false;
     }
 
-    private void ResetTriggers()
+    private bool IsPerfectBasket(Vector2 entryVel, Vector2 exitVel)
     {
-        _enteredFromTop = false;
-        _enteredFromBottom = false;
-        _exitedFromTop = false;
-        _exitedFromBottom = false;
-        _triggerCounter = 0;
+        var hoopUp = -transform.forward;
+        float entryDot = Mathf.Abs(Vector2.Dot(entryVel.normalized, hoopUp));
+        float exitDot = Mathf.Abs(Vector2.Dot(exitVel.normalized, hoopUp));
+
+        return entryDot > (1 - _perfectThreshold) && exitDot > (1 - _perfectThreshold);
     }
 
     public void Die()
     {
+        var particle = Instantiate(particlePrefab, transform.position, Quaternion.identity);
+        BasketSpawner.spawnedBaskets.Remove(transform.parent.gameObject);
         GetComponentInParent<MeshCollider>().enabled = false;
         transform.parent.DOScale(Vector3.zero, 0.5f);
         Destroy(transform.parent.gameObject, 1f);
+        Destroy(particle, 1f);
 
         if (bomb)
         {

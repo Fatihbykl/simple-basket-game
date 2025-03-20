@@ -14,6 +14,7 @@ public class HealthManager : MonoBehaviour
         EventManager.StartListening(EventNames.BallFell, OnGetDamage);
         EventManager.StartListening(EventNames.BombExploded, OnGetDamage);
         EventManager.StartListening(EventNames.RocketCollided, OnGetDamage);
+        EventManager.StartListening(EventNames.fireBarrierCollided, OnGetDamage);
         EventManager.StartListening(EventNames.Revived, OnRevived);
         UpdateHealthUI();
         _ball = GetComponent<Ball>();
@@ -49,5 +50,7 @@ public class HealthManager : MonoBehaviour
         EventManager.StopListening(EventNames.BallFell, OnGetDamage);
         EventManager.StopListening(EventNames.BombExploded, OnGetDamage);
         EventManager.StopListening(EventNames.RocketCollided, OnGetDamage);
+        EventManager.StopListening(EventNames.fireBarrierCollided, OnGetDamage);
+        EventManager.StopListening(EventNames.Revived, OnRevived);
     }
 }
