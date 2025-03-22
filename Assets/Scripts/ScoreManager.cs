@@ -6,6 +6,8 @@ using Random = UnityEngine.Random;
 
 public class ScoreManager : MonoBehaviour
 {
+    public SoundClip basketSound;
+    public SoundClip perfectBasketSound;
     public TextMeshProUGUI scoreText;
     public int baseScore;
     public float maxComboTime;
@@ -21,15 +23,20 @@ public class ScoreManager : MonoBehaviour
 
     private void AddScore()
     {
-        var isPerfect = EventManager.GetBool("isPerfect");
+        var isPerfect = EventManager.GetBool(EventNames.Score);
         var comboBonus = _combo * 2;
         var perfectBonus = isPerfect ? 5 : 0;
 
         var totalScore = baseScore + comboBonus + perfectBonus;
         _score += totalScore;
 
+        if (isPerfect)
+        {
+            var sender = (GameObject)EventManager.GetSender(EventNames.Score);
+            SoundManager.Instance.PlaySoundFXClip(perfectBasketSound, sender.transform);
+        }
+        
         UpdateScoreText();
-        Debug.Log($"🏀 Skor: {_score} (Combo: {_combo}, Perfect: {isPerfect})");
     }
 
     private void AddCombo()
@@ -41,11 +48,13 @@ public class ScoreManager : MonoBehaviour
         _combo++;
         _lastComboTime = Time.time;
 
+        var sender = (GameObject)EventManager.GetSender(EventNames.Combo);
         if (_combo >= 2)
         {
-            var sender = (GameObject)EventManager.GetSender(EventNames.Combo);
             CreateFloatingText(sender.transform.position);
         }
+        var pitchMultiplier = 1f + (_combo * 0.05f);
+        SoundManager.Instance.PlaySoundFXClip(basketSound, sender.transform, pitchMultiplier);
     }
     
     private void CreateFloatingText(Vector3 position)

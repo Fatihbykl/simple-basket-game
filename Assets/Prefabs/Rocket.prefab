@@ -125,6 +125,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77762b3054168a9499e238395864c41e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rocketLoop:
+    audioClip: {fileID: 8300000, guid: 8c443e08e8c97314b960e7c6482722c1, type: 3}
+    volume: 1
+  rocketExplosion:
+    audioClip: {fileID: 8300000, guid: dab4bbb66911c044b870c6177273062c, type: 3}
+    volume: 1
 --- !u!1 &4977626265669785969
 GameObject:
   m_ObjectHideFlags: 0

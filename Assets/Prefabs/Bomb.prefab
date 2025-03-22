@@ -71,6 +71,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee255ada6d98156439dd5f88a40b1090, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bombExplosion:
+    audioClip: {fileID: 8300000, guid: 9525c59e49078f047a8fa07682a1c1bd, type: 3}
+    volume: 1
+  bombLoop:
+    audioClip: {fileID: 8300000, guid: 546306c7fcae0904b86d53be5625045f, type: 3}
+    volume: 0.65
 --- !u!95 &5667772946545847744
 Animator:
   serializedVersion: 7

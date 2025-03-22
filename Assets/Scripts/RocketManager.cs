@@ -13,11 +13,19 @@ public class RocketManager : MonoBehaviour
     public float waitBeforeSign;
     public float flyTime;
     public float delayTime;
+    public SoundClip rocketLoop;
+    public SoundClip rocketExplosion;
     private bool _isActivated;
     private GameObject _rocket;
     private GameObject _warningSign;
     private bool _isRocketLeft;
     private bool _isRocketMoving;
+    private AudioSource _audioSource;
+
+    private void Start()
+    {
+        EventManager.StartListening(EventNames.RocketCollided, OnRocketCollided);
+    }
 
     private void Update()
     {
@@ -33,6 +41,11 @@ public class RocketManager : MonoBehaviour
         }
     }
 
+    private void OnRocketCollided()
+    {
+        SoundManager.Instance.PlaySoundFXClip(rocketExplosion, _rocket.transform);
+    }
+
     public void ActivateRocket()
     {
         if (_isActivated) { return; }
@@ -46,14 +59,18 @@ public class RocketManager : MonoBehaviour
         var newPos = GetPosition();
         _rocket = Instantiate(rocketPrefab, newPos, GetRotation());
         _warningSign = Instantiate(warningSign, GetSignPosition(newPos), warningSign.transform.rotation);
+        _audioSource = SoundManager.Instance.PlaySoundFXClip(rocketLoop, _rocket.transform, loop:true);
+        _audioSource.Pause();
         while (true)
         {
             yield return new WaitForSeconds(waitBeforeSign);
             _warningSign.transform.position = new Vector3(0, 1000f, 0);
             _isRocketMoving = true;
+            _audioSource.Play();
             yield return new WaitForSeconds(flyTime);
             _isRocketMoving = false;
             _isRocketLeft = !_isRocketLeft;
+            _audioSource.Pause();
             newPos = GetPosition();
             _rocket.transform.position = newPos;
             _rocket.transform.rotation = GetRotation();
@@ -99,5 +116,10 @@ public class RocketManager : MonoBehaviour
     private Quaternion GetRotation()
     {
         return Quaternion.Euler(_isRocketLeft ? new Vector3(0, 0, -90f) : new Vector3(0, 0, 90f));
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.StopListening(EventNames.RocketCollided, OnRocketCollided);
     }
 }

@@ -29,8 +29,8 @@ namespace Difficulties
             new Rotations(-75f, 0),
             new Rotations(-25f, 75),
             new Rotations(25f, 75),
-            new Rotations(65f, 75),
-            new Rotations(-65f, 75),
+            new Rotations(55f, 75),
+            new Rotations(-55f, 75),
             new Rotations(45f, 75),
             new Rotations(-45f, 75)
         };

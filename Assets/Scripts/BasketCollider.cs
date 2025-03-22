@@ -52,8 +52,8 @@ public class BasketCollider : MonoBehaviour
             {
                 bool isPerfect = IsPerfectBasket(_entryVelocity, exitVelocity);
                 GetComponent<BoxCollider>().enabled = false;
-                EventManager.EmitEvent(EventNames.Score);
-                EventManager.SetData("isPerfect", isPerfect);
+                EventManager.SetData(EventNames.Score, isPerfect);
+                EventManager.EmitEvent(EventNames.Score, gameObject);
                 EventManager.EmitEvent(EventNames.Combo, gameObject);
                 Die();
                 EventManager.EmitEvent(EventNames.Basket);

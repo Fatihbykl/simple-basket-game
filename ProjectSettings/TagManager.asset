@@ -8,11 +8,13 @@ TagManager:
   - Ball
   - Bomb
   - Rocket
+  - Enemy
+  - FxTemporaire
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ball
   - Water
   - UI
   - 

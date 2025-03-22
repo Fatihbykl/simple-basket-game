@@ -10,6 +10,7 @@ public class DifficultyManager : MonoBehaviour
 {
     public RocketManager rocketManager;
     public GameObject bombPrefab;
+    public SoundClip bombLoop;
     public GameObject fireBarrierPrefab;
     public GameObject barrierPreparePrefab;
     public float barrierPrepareTime;

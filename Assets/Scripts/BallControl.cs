@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 public class BallControl : MonoBehaviour
 {
     [SerializeField] private float forceMagnitude = 5f;
+    [SerializeField] private SoundClip[] hopSounds;
+    [SerializeField] private SoundClip[] collisionSounds;
     private TouchControls _touchControls;
     private Rigidbody _rigidbody;
     private bool _moveRight;
@@ -27,6 +29,11 @@ public class BallControl : MonoBehaviour
         _touchControls.Ball.Tap.performed -= BallJump;
     }
 
+    private void OnCollisionEnter(Collision other)
+    {
+        SoundManager.Instance.PlayRandomSoundFXClip(collisionSounds, transform);
+    }
+
     private void BallJump(InputAction.CallbackContext context)
     {
         var forceDirection = _moveRight ? new Vector2(0.5f,1) : new Vector2(-0.5f,1);
@@ -34,7 +41,7 @@ public class BallControl : MonoBehaviour
 
         _rigidbody.linearVelocity = Vector3.zero;
         _rigidbody.AddForce(forceDirection * forceMagnitude, ForceMode.Impulse);
-        
+        SoundManager.Instance.PlayRandomSoundFXClip(hopSounds, transform);
         _moveRight = !_moveRight;
     }
 }
