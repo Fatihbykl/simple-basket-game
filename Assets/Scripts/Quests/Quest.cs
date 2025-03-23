@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Quests
 {
     [System.Serializable]
-    public class Quest : MonoBehaviour
+    public class Quest
     {
         public string questName;
         public string description;

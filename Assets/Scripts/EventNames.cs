@@ -9,6 +9,7 @@ public static class EventNames
     public static readonly string LevelUpgraded = "LEVEL_UPGRADED";
     public static readonly string LevelLoaded = "LEVEL_LOADED";
     public static readonly string GameOver = "GAME_OVER";
+    public static readonly string NoHealth = "NO_HEALTH";
     public static readonly string Revived = "REVIVED";
     public static readonly string Score = "SCORED";
     public static readonly string Combo = "COMBO";

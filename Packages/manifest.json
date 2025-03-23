@@ -10,6 +10,7 @@
     "com.unity.inputsystem": "1.13.1",
     "com.unity.mobile.android-logcat": "1.4.4",
     "com.unity.multiplayer.center": "1.0.0",
+    "com.unity.nuget.newtonsoft-json": "3.0.1",
     "com.unity.render-pipelines.universal": "17.0.4",
     "com.unity.shadergraph": "17.0.4",
     "com.unity.test-framework": "1.4.6",
@@ -54,7 +55,8 @@
       "name": "OpenUPM",
       "url": "https://package.openupm.com",
       "scopes": [
-        "com.google"
+        "com.google",
+        "com.unity.nuget.newtonsoft-json@3.0"
       ],
       "overrideBuiltIns": false
     }
