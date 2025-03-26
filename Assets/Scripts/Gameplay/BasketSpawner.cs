@@ -2,73 +2,75 @@ using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
-public class BasketSpawner : MonoBehaviour
+namespace Gameplay
 {
-    public float boundsXMin, boundsXMax, boundsYMin, boundsYMax;
-    public GameObject basketPrefab;
-    public static List<GameObject> spawnedBaskets;
-    public float minDistance;
-
-    private void Start()
+    public class BasketSpawner : MonoBehaviour
     {
-        spawnedBaskets = new List<GameObject>();
-    }
+        public float boundsXMin, boundsXMax, boundsYMin, boundsYMax;
+        public GameObject basketPrefab;
+        public static List<GameObject> spawnedBaskets;
+        public float minDistance;
 
-    public async UniTask SpawnPot(int basketCount)
-    {
-        ClearBaskets();
-        await UniTask.WaitForSeconds(1f);
-        for (var i = 0; i < basketCount; i++)
+        private void Awake()
         {
-            Vector3 spawnPos;
-            int attempts = 0;
+            spawnedBaskets = new List<GameObject>();
+        }
 
-            do
+        public async UniTask SpawnPot(int basketCount)
+        {
+            ClearBaskets();
+            await UniTask.WaitForSeconds(1f);
+            for (var i = 0; i < basketCount; i++)
             {
-                spawnPos = GetRandomPosition();
-                attempts++;
+                Vector3 spawnPos;
+                int attempts = 0;
 
-                if (attempts > 10)
+                do
                 {
-                    Debug.LogWarning("Not found proper position!");
-                    return;
-                }
+                    spawnPos = GetRandomPosition();
+                    attempts++;
 
-            } while (IsOverlapping(spawnPos));
+                    if (attempts > 10)
+                    {
+                        Debug.LogWarning("Not found proper position!");
+                        return;
+                    }
+
+                } while (IsOverlapping(spawnPos));
             
-            var basket = Instantiate(basketPrefab, spawnPos, basketPrefab.transform.rotation);
-            spawnedBaskets.Add(basket);
-        }
-    }
-
-    private void ClearBaskets()
-    {
-        foreach (var basket in spawnedBaskets)
-        {
-            basket.GetComponentInChildren<BasketCollider>().Die();
-        }
-        spawnedBaskets.Clear();
-    }
-    
-    bool IsOverlapping(Vector3 newPosition)
-    {
-        foreach (var existingPos in spawnedBaskets)
-        {
-            if (Math.Abs(existingPos.transform.position.y - newPosition.y) < minDistance)
-            {
-                return true;
+                var basket = Instantiate(basketPrefab, spawnPos, basketPrefab.transform.rotation);
+                spawnedBaskets.Add(basket);
             }
         }
-        return false;
-    }
 
-    private Vector3 GetRandomPosition()
-    {
-        var x = Random.Range(boundsXMin, boundsXMax);
-        var y = Random.Range(boundsYMin, boundsYMax);
-        return new Vector3(x, y, 0);
+        private void ClearBaskets()
+        {
+            foreach (var basket in spawnedBaskets)
+            {
+                basket.GetComponentInChildren<BasketCollider>().Die();
+            }
+            spawnedBaskets.Clear();
+        }
+    
+        bool IsOverlapping(Vector3 newPosition)
+        {
+            foreach (var existingPos in spawnedBaskets)
+            {
+                if (Math.Abs(existingPos.transform.position.y - newPosition.y) < minDistance)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private Vector3 GetRandomPosition()
+        {
+            var x = Random.Range(boundsXMin, boundsXMax);
+            var y = Random.Range(boundsYMin, boundsYMax);
+            return new Vector3(x, y, 0);
+        }
     }
 }

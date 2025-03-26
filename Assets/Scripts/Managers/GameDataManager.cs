@@ -1,21 +1,34 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using GooglePlayGames;
+using GooglePlayGames.BasicApi;
+using GooglePlayGames.BasicApi.SavedGame;
 using Quests;
 using TigerForge;
 using Newtonsoft.Json;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Managers
 {
     [System.Serializable]
     public class Data
     {
-        private int _maxScore;
-
-        public int MaxScore
+        private int _totalScore;
+        
+        public int TotalScore
         {
-            get => _maxScore;
-            set => _maxScore = Mathf.Max(value, _maxScore);
+            get => _totalScore;
+            set => _totalScore += value;
+        }
+        
+        private int _bestScore;
+
+        public int BestScore
+        {
+            get => _bestScore;
+            set => _bestScore = Mathf.Max(value, _bestScore);
         }
 
         private int _gamesPlayed;
@@ -25,15 +38,16 @@ namespace Managers
             get => _gamesPlayed;
             set => _gamesPlayed++;
         }
-        
-        private int _maxCombo;
 
-        public int MaxCombo
+        private int _bestCombo;
+
+        public int BestCombo
         {
-            get => _maxCombo;
-            set => _maxCombo = Mathf.Max(value, _maxCombo);
+            get => _bestCombo;
+            set => _bestCombo = Mathf.Max(value, _bestCombo);
         }
 
+        public RewardType selectedBall = RewardType.Default;
         public List<Quest> quests;
     }
     public class GameDataManager : MonoBehaviour
@@ -59,6 +73,20 @@ namespace Managers
         private void Start()
         {
             EventManager.StartListening(EventNames.GameOver, OnGameOver);
+            
+            var loadedData = LoadData();
+            data.BestScore = loadedData.BestScore;
+            data.TotalScore = loadedData.TotalScore;
+            data.BestCombo = loadedData.BestCombo;
+            data.GamesPlayed = loadedData.GamesPlayed;
+            data.selectedBall = loadedData.selectedBall;
+
+            foreach (var quest in loadedData.quests)
+            {
+                var q = data.quests.FirstOrDefault(q => q.rewardType == quest.rewardType);
+                q.progress = quest.progress;
+                q.isCompleted = quest.isCompleted;
+            }
         }
 
         private void OnDestroy()
@@ -68,30 +96,76 @@ namespace Managers
 
         private void OnGameOver()
         {
-            UpdateQuest("Play Games!", 1, true);
+            UpdateQuests();
             var json = ToJson();
             Debug.Log(json);
         }
 
-        public void UpdateQuest(string questName, int amount, bool isAdditive)
+        public void UpdateQuests()
         {
-            foreach (var quest in data.quests.Where(quest => quest.questName == questName && !quest.isCompleted))
+            foreach (var quest in data.quests)
             {
-                quest.progress = isAdditive ? quest.progress += amount : Mathf.Max(quest.progress, amount);
-
+                if (quest.isCompleted){ continue; }
+                
+                quest.progress = quest.target switch
+                {
+                    TargetData.BestScore => data.BestScore,
+                    TargetData.BestCombo => data.BestCombo,
+                    TargetData.TotalScore => data.TotalScore,
+                    TargetData.GameCount => data.GamesPlayed,
+                    _ => quest.progress
+                };
+                
                 if (quest.progress >= quest.goal)
                 {
                     quest.isCompleted = true;
-                    GrantReward(quest.reward);
                 }
 
-                Debug.Log(quest.questName + " ilerleme: " + quest.progress + "/" + quest.goal);
+                Debug.Log(quest.rewardDisplayName + " ilerleme: " + quest.progress + "/" + quest.goal);
             }
         }
 
-        void GrantReward(string reward)
+        private void SaveData()
         {
-            Debug.Log("Ödül kazandın: " + reward);
+            ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+            savedGameClient.OpenWithAutomaticConflictResolution("player_data", DataSource.ReadCacheOrNetwork, ConflictResolutionStrategy.UseLongestPlaytime, (status, metadata) =>
+            {
+                if (status == SavedGameRequestStatus.Success)
+                {
+                    byte[] data = Encoding.UTF8.GetBytes(ToJson());
+                    SavedGameMetadataUpdate update = new SavedGameMetadataUpdate.Builder().WithUpdatedDescription("player_data Progress Saved").Build();
+                    savedGameClient.CommitUpdate(metadata, update, data, (commitStatus, meta) =>
+                    {
+                        Debug.Log(commitStatus == SavedGameRequestStatus.Success ? "Save Successful!" : "Save Failed!");
+                    });
+                }
+            });
+        }
+
+        private Data LoadData()
+        {
+            ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+            Data dataObject = null;
+            savedGameClient.OpenWithAutomaticConflictResolution("player_data", DataSource.ReadCacheOrNetwork, ConflictResolutionStrategy.UseLongestPlaytime, (status, metadata) =>
+            {
+                if (status == SavedGameRequestStatus.Success)
+                {
+                    savedGameClient.ReadBinaryData(metadata, (readStatus, data) =>
+                    {
+                        if (readStatus == SavedGameRequestStatus.Success)
+                        {
+                            if (data.Length == 0)
+                            {
+                                SaveData();
+                                return;
+                            }
+                            string json = Encoding.UTF8.GetString(data);
+                            dataObject = FromJson(json);
+                        }
+                    });
+                }
+            });
+            return dataObject;
         }
         
         public string ToJson()
@@ -99,7 +173,7 @@ namespace Managers
             return JsonConvert.SerializeObject(data);
         }  
 
-        public static Data FromJson(string json)  
+        public Data FromJson(string json)  
         {  
             return JsonConvert.DeserializeObject<Data>(json);  
         } 

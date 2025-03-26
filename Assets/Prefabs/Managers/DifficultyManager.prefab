@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &19822650372038062
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3752954595204315497}
+  - component: {fileID: 3657828309678804844}
+  m_Layer: 0
+  m_Name: DifficultyManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3752954595204315497
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 19822650372038062}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.14001018, y: 1.8225427, z: 0.5501017}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3657828309678804844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 19822650372038062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f5873217d8db5e42a33398eb0dcf788, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rocketManager: {fileID: 0}
+  bombPrefab: {fileID: 377442527698156645, guid: cb6f907c47807824aa1585d9108ade92, type: 3}
+  bombLoop:
+    audioClip: {fileID: 8300000, guid: 546306c7fcae0904b86d53be5625045f, type: 3}
+    volume: 1
+  fireBarrierPrefab: {fileID: 8964949793953908549, guid: 06edd661562533342ac9d80f4bcf2759, type: 3}
+  barrierPreparePrefab: {fileID: 77119034358294749, guid: 7318017ef8265194f897f11ae74bdbff, type: 3}
+  barrierPrepareTime: 3
+  barrierFireTime: 5
+  wheelPrefab: {fileID: 4598548403011565988, guid: 8b43b14419f3b024a86122d50abcb2bb, type: 3}
+  disappearEffectPrefab: {fileID: 5486751370271113822, guid: e50aa64f32340e045a9e85912ec637b1, type: 3}

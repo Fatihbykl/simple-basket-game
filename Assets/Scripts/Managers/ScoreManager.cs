@@ -29,14 +29,15 @@ namespace Managers
 
         private void OnNoHealth()
         {
-            GameDataManager.instance.data.MaxScore = _score;
-            GameDataManager.instance.data.MaxCombo = _maxCombo;
+            GameDataManager.instance.data.BestScore = _score;
+            GameDataManager.instance.data.BestCombo = _maxCombo;
+            GameDataManager.instance.data.TotalScore = _score;
         }
 
         private void OnGameOver()
         {
-            gameOverscoreText.text = GameDataManager.instance.data.MaxScore.ToString();
-            gameOverMaxScoreText.text = GameDataManager.instance.data.MaxScore.ToString();
+            gameOverscoreText.text = GameDataManager.instance.data.BestScore.ToString();
+            gameOverMaxScoreText.text = GameDataManager.instance.data.BestScore.ToString();
         }
 
         private void AddScore()

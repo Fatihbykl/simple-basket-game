@@ -1,15 +1,17 @@
 using TigerForge;
 using UnityEngine;
 
-public class FireBarrierCollider : MonoBehaviour
+namespace Gameplay
 {
-    void OnParticleCollision(GameObject other)
+    public class FireBarrierCollider : MonoBehaviour
     {
-        if (other.CompareTag("Ball"))
+        void OnParticleCollision(GameObject other)
         {
-            EventManager.EmitEventData(EventNames.fireBarrierCollided, other.gameObject.transform.position);
-            EventManager.EmitEvent(EventNames.fireBarrierCollided);
-            gameObject.SetActive(false);
+            if (other.CompareTag("Ball"))
+            {
+                EventManager.EmitEventData(EventNames.fireBarrierCollided, other.gameObject.transform.position);
+                gameObject.SetActive(false);
+            }
         }
     }
 }

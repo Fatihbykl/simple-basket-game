@@ -15,17 +15,17 @@ public class SoundManager : MonoBehaviour
 
     public static SoundManager Instance { get; private set; }
 
-    private void Awake()
+    void Awake()
     {
-        if (Instance != null)
+        if (Instance == null)
         {
-            Debug.LogError("Found more than one Audio Manager in the scene.");
-            Destroy(this);
-            return;
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
-
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     public AudioSource PlaySoundFXClip(SoundClip clip, Transform spawnTransform, float pitch = 1f, bool loop = false)

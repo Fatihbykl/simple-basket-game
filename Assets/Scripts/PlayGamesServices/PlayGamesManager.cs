@@ -1,52 +1,70 @@
 using GooglePlayGames;
 using UnityEngine;
 
-public class PlayGamesManager : MonoBehaviour
+namespace PlayGamesServices
 {
-    void Start()
+    public class PlayGamesManager : MonoBehaviour
     {
-        PlayGamesPlatform.Activate();
-        SignIn();
-    }
+        private static PlayGamesManager instance;
 
-    void SignIn()
-    {
-        PlayGamesPlatform.Instance.localUser.Authenticate((bool success) => {
-            if (success)
+        void Awake()
+        {
+            if (instance == null)
             {
-                Debug.Log("Google Play Hizmetlerine giriş başarılı!");
+                instance = this;
+                DontDestroyOnLoad(gameObject);
             }
             else
             {
-                Debug.Log("Google Play Hizmetlerine giriş başarısız.");
+                Destroy(gameObject);
             }
-        });
-    }
-    
-    public void SubmitScore(int score)
-    {
-        if (PlayGamesPlatform.Instance.localUser.authenticated)
+        }
+        
+        void Start()
         {
-            PlayGamesPlatform.Instance.ReportScore(score, Keys.LEADERBOARD_ID, (bool success) => {
+            PlayGamesPlatform.Activate();
+            SignIn();
+        }
+
+        void SignIn()
+        {
+            PlayGamesPlatform.Instance.localUser.Authenticate((bool success) => {
                 if (success)
                 {
-                    Debug.Log("Skor başarıyla gönderildi!");
+                    Debug.Log("Google Play Hizmetlerine giriş başarılı!");
                 }
                 else
                 {
-                    Debug.Log("Skor gönderme başarısız.");
+                    Debug.Log("Google Play Hizmetlerine giriş başarısız.");
                 }
             });
         }
-    }
     
-    public void ShowLeaderboard()
-    {
-        if (PlayGamesPlatform.Instance.localUser.authenticated)
+        public void SubmitScore(int score)
         {
-            PlayGamesPlatform.Instance.ShowLeaderboardUI(Keys.LEADERBOARD_ID);
+            if (PlayGamesPlatform.Instance.localUser.authenticated)
+            {
+                PlayGamesPlatform.Instance.ReportScore(score, Keys.LEADERBOARD_ID, (bool success) => {
+                    if (success)
+                    {
+                        Debug.Log("Skor başarıyla gönderildi!");
+                    }
+                    else
+                    {
+                        Debug.Log("Skor gönderme başarısız.");
+                    }
+                });
+            }
         }
+    
+        public void ShowLeaderboard()
+        {
+            if (PlayGamesPlatform.Instance.localUser.authenticated)
+            {
+                PlayGamesPlatform.Instance.ShowLeaderboardUI(Keys.LEADERBOARD_ID);
+            }
+        }
+
+
     }
-
-
 }

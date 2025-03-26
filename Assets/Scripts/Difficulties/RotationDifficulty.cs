@@ -29,10 +29,10 @@ namespace Difficulties
             new Rotations(-75f, 0),
             new Rotations(-25f, 75),
             new Rotations(25f, 75),
-            new Rotations(55f, 75),
-            new Rotations(-55f, 75),
             new Rotations(45f, 75),
-            new Rotations(-45f, 75)
+            new Rotations(-45f, 75),
+            new Rotations(35f, 75),
+            new Rotations(-35f, 75)
         };
 
         public override void ApplyDifficulty(List<GameObject> baskets)

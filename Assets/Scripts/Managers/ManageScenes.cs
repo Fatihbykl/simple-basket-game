@@ -2,20 +2,23 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ManageScenes : MonoBehaviour
+namespace Managers
 {
-
-    public void LoadScene(string sceneName)
+    public class ManageScenes : MonoBehaviour
     {
-        StartCoroutine(LoadYourAsyncScene(sceneName));
-    }
-    IEnumerator LoadYourAsyncScene(string sceneName)
-    {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
-
-        while (asyncLoad is { isDone: false })
+        public void LoadScene(string sceneName)
         {
-            yield return null;
+            StartCoroutine(LoadYourAsyncScene(sceneName));
+            Time.timeScale = 1;
+        }
+        IEnumerator LoadYourAsyncScene(string sceneName)
+        {
+            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+
+            while (asyncLoad is { isDone: false })
+            {
+                yield return null;
+            }
         }
     }
 }

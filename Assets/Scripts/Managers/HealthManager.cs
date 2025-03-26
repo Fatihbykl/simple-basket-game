@@ -1,3 +1,4 @@
+using Gameplay;
 using TigerForge;
 using TMPro;
 using UnityEngine;
@@ -24,10 +25,10 @@ namespace Managers
         private void OnGetDamage()
         {
             health--;
+            UpdateHealthUI();
             if (health <= 0)
             {
                 EventManager.EmitEvent(EventNames.NoHealth);
-                UpdateHealthUI();
                 return;
             }
         

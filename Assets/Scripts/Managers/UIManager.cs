@@ -39,7 +39,7 @@ namespace Managers
 
         private async UniTask AnimateContinueScreenMoveIn()
         {
-            //await UniTask.WaitForSeconds(1f, true);
+            continueScreenBg.SetActive(true);
             await UniTask.WhenAll(
                 continueScreenPanel.transform.DOLocalMoveX(0f, 0.5f).SetUpdate(true).ToUniTask(),
                 continueScreenBg.GetComponent<Image>().DOFade(100f / 255f, 0.5f).SetUpdate(true).ToUniTask(),
@@ -55,11 +55,12 @@ namespace Managers
                 continueScreenBg.GetComponent<Image>().DOFade(0f / 255f, 0.5f).SetUpdate(true).ToUniTask(),
                 continueScreenRay.GetComponent<Image>().DOFade(0f / 255f, 0.5f).SetUpdate(true).ToUniTask()
             );
-
+            continueScreenBg.SetActive(false);
         }
 
         private async UniTask AnimateScreenMoveIn()
         {
+            gameOverTransparent.SetActive(true);
             await UniTask.WhenAll(
                 gameOverScreen.transform.DOLocalMoveX(0f, 0.5f).SetUpdate(true).ToUniTask(),
                 gameOverTransparent.GetComponent<Image>().DOFade(200f / 255f, 0.5f).SetUpdate(true).ToUniTask()
@@ -73,6 +74,7 @@ namespace Managers
                 gameOverScreen.transform.DOLocalMoveX(-1500f, 0.5f).SetUpdate(true).ToUniTask(),
                 gameOverTransparent.GetComponent<Image>().DOFade(0f, 0.5f).SetUpdate(true).ToUniTask()
             );
+            gameOverTransparent.SetActive(false);
         }
     }
 }
