@@ -4,20 +4,22 @@ using UnityEngine;
 
 public class FpsCounter : MonoBehaviour
 {
-    public TextMeshProUGUI fpsText; // UI Text objesi
+    public TextMeshProUGUI fpsText;
 
     private float deltaTime = 0.0f;
-
-    private void Awake()
-    {
-        QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 60;
-    }
+    private float updateInterval = 1f; // 0.5 saniyede bir güncelle
+    private float timer = 0f;
 
     void Update()
     {
         deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
-        float fps = 1.0f / deltaTime;
-        fpsText.text = $"FPS: {Mathf.Ceil(fps)}";
+        timer += Time.unscaledDeltaTime;
+
+        if (timer >= updateInterval)
+        {
+            int fps = Mathf.CeilToInt(1.0f / deltaTime);
+            fpsText.text = "FPS: " + fps;
+            timer = 0f; // Zamanlayıcıyı sıfırla
+        }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -6,6 +7,12 @@ namespace Managers
 {
     public class ManageScenes : MonoBehaviour
     {
+        private void Awake()
+        {
+            QualitySettings.vSyncCount = 0;
+            Application.targetFrameRate = 60;
+        }
+
         public void LoadScene(string sceneName)
         {
             StartCoroutine(LoadYourAsyncScene(sceneName));
@@ -19,6 +26,11 @@ namespace Managers
             {
                 yield return null;
             }
+        }
+
+        public void QuitGame()
+        {
+            Application.Quit();
         }
     }
 }

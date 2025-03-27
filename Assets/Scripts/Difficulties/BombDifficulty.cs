@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Gameplay;
 using UnityEngine;
 
 public class BombDifficulty : Difficulty

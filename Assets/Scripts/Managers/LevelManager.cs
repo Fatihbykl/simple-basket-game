@@ -8,7 +8,7 @@ namespace Managers
     public class LevelManager : MonoBehaviour
     {
         public BasketSpawner spawner;
-        [SerializeField] private int _currentLevel = 92;
+        [SerializeField] private int _currentLevel;
 
         private void Start()
         {
@@ -23,7 +23,6 @@ namespace Managers
 
         private async UniTask LoadLevel()
         {
-            Debug.Log(BasketSpawner.spawnedBaskets.Count);
             if (BasketSpawner.spawnedBaskets.Count != 0) { return; }
 
             _currentLevel++;
@@ -31,8 +30,8 @@ namespace Managers
         
             int basketCount = 1;
         
-            if (_currentLevel >= 10) basketCount = 2;
-            if (_currentLevel >= 20) basketCount = 3;
+            if (_currentLevel >= 40) basketCount = 2;
+            if (_currentLevel >= 50) basketCount = 3;
 
             await spawner.SpawnPot(basketCount);
             EventManager.EmitEvent(EventNames.LevelLoaded);

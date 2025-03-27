@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Difficulties;
 using Gameplay;
+using Managers;
 using TigerForge;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -44,7 +45,10 @@ public class DifficultyManager : MonoBehaviour
     private void PickDifficulty()
     {
         _activeRotation?.ApplyDifficulty(BasketSpawner.spawnedBaskets);
-        
+        if (_availableDifficulties.Count == 0)
+        {
+            return;
+        }
         if (_level < 100)
         {
             _availableDifficulties.Last().ApplyDifficulty(BasketSpawner.spawnedBaskets);
@@ -59,27 +63,27 @@ public class DifficultyManager : MonoBehaviour
     {
         switch (_level)
         {
-            case 10:
+            case 3:
                 _availableDifficulties.Add(new BombDifficulty(bombPrefab));
                 _activeRotation = new RotationDifficulty();
                 rocketManager.ActivateRocket();
                 break;
-            case 30:
+            case 6:
                 _availableDifficulties.Add(new MovingDifficulty());
                 break;
-            case 50:
+            case 9:
                 _availableDifficulties.Add(new DisappearDifficulty(disappearEffectPrefab));
                 break;
-            case 75:
+            case 12:
                 _availableDifficulties.Add(new WheelDifficulty(wheelPrefab));
                 break;
-            case 94:
+            case 15:
                 _availableDifficulties.Add(new ShrinkingBasketsDifficulty());
                 break;
-            case 95:
+            case 18:
                 _availableDifficulties.Add(new FireBarrierDifficulty(fireBarrierPrefab, barrierPreparePrefab, barrierPrepareTime, barrierFireTime));
                 break;
-            case 100:
+            case 21:
                 GameTimer.Instance.StartTimer();
                 break;
         }
