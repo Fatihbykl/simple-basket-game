@@ -24,6 +24,8 @@ namespace Managers
 
         private void OnGetDamage()
         {
+            if (_ball.isShieldActive) { return; }
+            
             health--;
             UpdateHealthUI();
             if (health <= 0)

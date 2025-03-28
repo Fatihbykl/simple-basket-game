@@ -8,6 +8,7 @@ public static class EventNames
     public static readonly string fireBarrierCollided = "FIRE_BARRIER_COLLIDED";
     public static readonly string LevelUpgraded = "LEVEL_UPGRADED";
     public static readonly string LevelLoaded = "LEVEL_LOADED";
+    public static readonly string DataLoaded = "DATA_LOADED";
     public static readonly string GameOver = "GAME_OVER";
     public static readonly string NoHealth = "NO_HEALTH";
     public static readonly string Revived = "REVIVED";

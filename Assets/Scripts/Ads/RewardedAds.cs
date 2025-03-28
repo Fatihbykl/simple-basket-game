@@ -53,9 +53,8 @@ namespace Ads
 
                 // Register to ad events to extend functionality.
                 RegisterEventHandlers(ad);
-
+                ShowAd();
             });
-            ShowAd();
         }
 
         /// <summary>

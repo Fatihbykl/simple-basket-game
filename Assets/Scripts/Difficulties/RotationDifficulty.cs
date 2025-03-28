@@ -18,7 +18,7 @@ namespace Difficulties
         
         public Quaternion GetRotation()
         {
-            return Quaternion.Euler(new Vector3(X, Y, 0));
+            return Quaternion.Euler(X, Y, 0);
         }
     }
     
@@ -27,12 +27,12 @@ namespace Difficulties
         private Rotations[] _rotationsArray = new[]
         {
             new Rotations(-75f, 0),
-            new Rotations(-25f, 75),
-            new Rotations(25f, 75),
-            new Rotations(45f, 75),
-            new Rotations(-45f, 75),
-            new Rotations(35f, 75),
-            new Rotations(-35f, 75)
+            new Rotations(-55f, 75),
+            new Rotations(55f, 75),
+            new Rotations(65f, 75),
+            new Rotations(-65f, 75),
+            new Rotations(75f, 75),
+            new Rotations(-75f, 75)
         };
 
         public override void ApplyDifficulty(List<GameObject> baskets)

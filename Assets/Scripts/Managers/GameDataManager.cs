@@ -7,6 +7,7 @@ using GooglePlayGames.BasicApi.SavedGame;
 using Quests;
 using TigerForge;
 using Newtonsoft.Json;
+using PlayGamesServices;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -73,8 +74,20 @@ namespace Managers
         private void Start()
         {
             EventManager.StartListening(EventNames.GameOver, OnGameOver);
+            EventManager.StartListening(EventNames.DataLoaded, OnDataLoaded);
+        }
+
+        private void OnDestroy()
+        {
+            EventManager.StopListening(EventNames.GameOver, OnGameOver);
+            EventManager.StopListening(EventNames.DataLoaded, OnDataLoaded);
+
+        }
+
+        private void OnDataLoaded()
+        {
+            if (EventManager.GetData(EventNames.DataLoaded) is not Data loadedData) { return; }
             
-            var loadedData = LoadData();
             data.BestScore = loadedData.BestScore;
             data.TotalScore = loadedData.TotalScore;
             data.BestCombo = loadedData.BestCombo;
@@ -89,16 +102,10 @@ namespace Managers
             }
         }
 
-        private void OnDestroy()
-        {
-            EventManager.StopListening(EventNames.GameOver, OnGameOver);
-        }
-
         private void OnGameOver()
         {
             UpdateQuests();
-            var json = ToJson();
-            Debug.Log(json);
+            PlayGamesManager.instance.SaveData(ToJson());
         }
 
         public void UpdateQuests()
@@ -124,60 +131,12 @@ namespace Managers
                 Debug.Log(quest.rewardDisplayName + " ilerleme: " + quest.progress + "/" + quest.goal);
             }
         }
-
-        private void SaveData()
-        {
-            ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
-            savedGameClient.OpenWithAutomaticConflictResolution("player_data", DataSource.ReadCacheOrNetwork, ConflictResolutionStrategy.UseLongestPlaytime, (status, metadata) =>
-            {
-                if (status == SavedGameRequestStatus.Success)
-                {
-                    byte[] data = Encoding.UTF8.GetBytes(ToJson());
-                    SavedGameMetadataUpdate update = new SavedGameMetadataUpdate.Builder().WithUpdatedDescription("player_data Progress Saved").Build();
-                    savedGameClient.CommitUpdate(metadata, update, data, (commitStatus, meta) =>
-                    {
-                        Debug.Log(commitStatus == SavedGameRequestStatus.Success ? "Save Successful!" : "Save Failed!");
-                    });
-                }
-            });
-        }
-
-        private Data LoadData()
-        {
-            ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
-            Data dataObject = null;
-            savedGameClient.OpenWithAutomaticConflictResolution("player_data", DataSource.ReadCacheOrNetwork, ConflictResolutionStrategy.UseLongestPlaytime, (status, metadata) =>
-            {
-                if (status == SavedGameRequestStatus.Success)
-                {
-                    savedGameClient.ReadBinaryData(metadata, (readStatus, data) =>
-                    {
-                        if (readStatus == SavedGameRequestStatus.Success)
-                        {
-                            if (data.Length == 0)
-                            {
-                                SaveData();
-                                return;
-                            }
-                            string json = Encoding.UTF8.GetString(data);
-                            dataObject = FromJson(json);
-                        }
-                    });
-                }
-            });
-            return dataObject;
-        }
         
         public string ToJson()
         {
             return JsonConvert.SerializeObject(data);
         }  
-
-        public Data FromJson(string json)  
-        {  
-            return JsonConvert.DeserializeObject<Data>(json);  
-        } 
-
+        
         private void OnApplicationQuit()
         {
             Debug.Log("Saved.");

@@ -14,6 +14,7 @@ namespace Managers
         public TextMeshProUGUI gameOverMaxScoreText;
         public int baseScore;
         public float maxComboTime;
+        [HideInInspector] public int scoreMultiplier = 1;
         private int _combo;
         private int _maxCombo;
         private float _lastComboTime;
@@ -36,7 +37,7 @@ namespace Managers
 
         private void OnGameOver()
         {
-            gameOverscoreText.text = GameDataManager.instance.data.BestScore.ToString();
+            gameOverscoreText.text = _score.ToString();
             gameOverMaxScoreText.text = GameDataManager.instance.data.BestScore.ToString();
         }
 
@@ -47,7 +48,7 @@ namespace Managers
             var perfectBonus = isPerfect ? 5 : 0;
 
             var totalScore = baseScore + comboBonus + perfectBonus;
-            _score += totalScore;
+            _score += totalScore * scoreMultiplier;
 
             if (isPerfect)
             {

@@ -27,10 +27,5 @@ namespace Managers
                 yield return null;
             }
         }
-
-        public void QuitGame()
-        {
-            Application.Quit();
-        }
     }
 }

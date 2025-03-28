@@ -10,6 +10,8 @@ namespace Gameplay
         public ParticleSystem bombCollideEffect;
         public ParticleSystem rocketCollideEffect;
         public ParticleSystem fireBarrierCollideEffect;
+        public ParticleSystem shieldEffect;
+        [HideInInspector] public bool isShieldActive;
         private Rigidbody _rb;
 
         private void Start()
@@ -20,6 +22,18 @@ namespace Gameplay
 
             _rb = GetComponent<Rigidbody>();
             ActivateEffect((int)GameDataManager.instance.data.selectedBall);
+        }
+
+        public void ActivateShield()
+        {
+            isShieldActive = true;
+            shieldEffect.Play();
+        }
+
+        public void DeactivateShield()
+        {
+            isShieldActive = false;
+            shieldEffect.Stop();
         }
 
         private void ActivateEffect(int index)
