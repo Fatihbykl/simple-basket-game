@@ -27,12 +27,12 @@ namespace Difficulties
         private Rotations[] _rotationsArray = new[]
         {
             new Rotations(-75f, 0),
-            new Rotations(-55f, 75),
-            new Rotations(55f, 75),
-            new Rotations(65f, 75),
             new Rotations(-65f, 75),
+            new Rotations(65f, 75),
             new Rotations(75f, 75),
-            new Rotations(-75f, 75)
+            new Rotations(-75f, 75),
+            new Rotations(85f, 75),
+            new Rotations(-85f, 75)
         };
 
         public override void ApplyDifficulty(List<GameObject> baskets)

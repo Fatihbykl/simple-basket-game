@@ -81,6 +81,8 @@ namespace PlayGamesServices
                                 Debug.Log("Saved data loaded " + json);
 
                                 myData = JsonUtility.FromJson<Data>(json);
+                                Debug.Log(myData);
+                                EventManager.EmitEventData(EventNames.DataLoaded, myData);
                             }
                             else
                             {
@@ -93,7 +95,6 @@ namespace PlayGamesServices
                         Debug.LogError("Failed to open saved games");
                     }
                 });
-            EventManager.EmitEventData(EventNames.DataLoaded, myData);
         }
 
         public void SaveData(string jsonData)

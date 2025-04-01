@@ -30,7 +30,7 @@ namespace Managers
         
             int basketCount = 1;
         
-            if (_currentLevel >= 40) basketCount = 2;
+            if (_currentLevel >= 25) basketCount = 2;
             if (_currentLevel >= 50) basketCount = 3;
 
             await spawner.SpawnPot(basketCount);

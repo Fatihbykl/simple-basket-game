@@ -1,4 +1,6 @@
 using System;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using Gameplay;
 using Managers;
 using UnityEngine;
@@ -23,11 +25,34 @@ namespace PowerUp
         public int duration;
         public Sprite icon;
         public bool isActive;
-
-        public virtual void Activate(SkillContext context)
+        public int remainingTime;
+        private CancellationTokenSource cts;
+        
+        public virtual void Activate(SkillContext context) {}
+        
+        public void StartTimer(int seconds, Action onComplete)
         {
-            if (isActive) { return; }
-            count--;
+            cts?.Cancel();
+            cts = new CancellationTokenSource();
+            TimerRoutine(seconds, onComplete, cts.Token).Forget();
+        }
+
+        private async UniTaskVoid TimerRoutine(int seconds, Action onComplete, CancellationToken token)
+        {
+            for (int i = seconds; i >= 0; i--)
+            {
+                if (token.IsCancellationRequested) return;
+
+                remainingTime = i;
+                await UniTask.Delay(1000, cancellationToken: token);
+            }
+
+            onComplete?.Invoke();
+        }
+
+        private void OnDestroy()
+        {
+            cts?.Cancel();
         }
     }
 }

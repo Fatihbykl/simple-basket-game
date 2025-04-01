@@ -15,16 +15,7 @@ namespace Ads
         #endif
 
         private BannerView _bannerView;
-
-
-        private void Start()
-        {
-            LoadAd();
-        }
-
-        /// <summary>
-        /// Creates a 320x50 banner view at bottom of the screen.
-        /// </summary>
+        
         public void CreateBannerView()
         {
             Debug.Log("Creating banner view");

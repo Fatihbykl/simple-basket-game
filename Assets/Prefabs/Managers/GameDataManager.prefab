@@ -50,88 +50,88 @@ MonoBehaviour:
     - rewardType: 0
       rewardDisplayName: Default Ball
       description: 
-      goal: 0
-      progress: 0
+      goal: 1
+      progress: 1
       isCompleted: 1
       rewardIcon: {fileID: 21300000, guid: 25758ad95c854e741b3af69ac999c774, type: 3}
       target: 0
     - rewardType: 1
-      rewardDisplayName: Starter  Ball
-      description: 
-      goal: 33
+      rewardDisplayName: Starter Ball
+      description: Play 10 games.
+      goal: 10
       progress: 0
       isCompleted: 0
       rewardIcon: {fileID: 21300000, guid: b665e3cf98880cc49806efb390919a81, type: 3}
-      target: 2
+      target: 3
     - rewardType: 2
       rewardDisplayName: Swift Sphere
-      description: eeeeeeee
-      goal: 33
+      description: Achieve a 5 combo streak in a single game.
+      goal: 5
       progress: 0
       isCompleted: 0
       rewardIcon: {fileID: 21300000, guid: 902ef01d9b7b28243873521cc0b478ce, type: 3}
       target: 2
     - rewardType: 3
       rewardDisplayName: Power Orb
-      description: eeeeeeee
-      goal: 33
+      description: Reach 500 points in a single game.
+      goal: 500
       progress: 0
       isCompleted: 0
-      rewardIcon: {fileID: 21300000, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
-      target: 2
+      rewardIcon: {fileID: 21300000, guid: 47c5e384cca1ac042b84842c6a2d4360, type: 3}
+      target: 1
     - rewardType: 4
       rewardDisplayName: Endurance Ball
-      description: eeeeeeee
+      description: Play 10 games.
       goal: 33
       progress: 0
       isCompleted: 0
-      rewardIcon: {fileID: 21300000, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
-      target: 2
+      rewardIcon: {fileID: 21300000, guid: 1b68eea3e73b6754e9d76347903cf04d, type: 3}
+      target: 3
     - rewardType: 5
       rewardDisplayName: Combo Core
-      description: eeeeeeee
-      goal: 33
+      description: Achieve a 10-combo streak in a single game.
+      goal: 10
       progress: 0
       isCompleted: 0
-      rewardIcon: {fileID: 21300000, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
+      rewardIcon: {fileID: 21300000, guid: 73afee984dca713418963456424617d0, type: 3}
       target: 2
     - rewardType: 6
       rewardDisplayName: Blazing Sphere
-      description: eeeeeeee
-      goal: 33
+      description: Score 1,500 points in a single game.
+      goal: 1500
       progress: 0
       isCompleted: 0
-      rewardIcon: {fileID: 21300000, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
-      target: 2
+      rewardIcon: {fileID: 21300000, guid: c430251e8db15df45a8483c0e2761967, type: 3}
+      target: 1
     - rewardType: 7
       rewardDisplayName: Electric Ball
-      description: eeeeeeee
-      goal: 33
+      description: Reach a total score of 10,000 across all games.
+      goal: 10000
       progress: 0
       isCompleted: 0
-      rewardIcon: {fileID: 21300000, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
-      target: 2
+      rewardIcon: {fileID: 21300000, guid: 946a26a65da748a45bbce5f13c40a702, type: 3}
+      target: 0
     - rewardType: 8
       rewardDisplayName: Green Fireball
-      description: eeeeeeee
-      goal: 33
+      description: Play 50 games.
+      goal: 50
       progress: 0
       isCompleted: 0
-      rewardIcon: {fileID: 21300000, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
-      target: 2
+      rewardIcon: {fileID: 21300000, guid: 72ab1fe82d86ef84b8ef003c6b145627, type: 3}
+      target: 3
     - rewardType: 9
       rewardDisplayName: Eternal Ball
-      description: eeeeeeee
-      goal: 33
+      description: Score 3,000 points in a single game.
+      goal: 3000
       progress: 0
       isCompleted: 0
-      rewardIcon: {fileID: 21300000, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
-      target: 2
+      rewardIcon: {fileID: 21300000, guid: 531fd18ae102dcf48a9fc94e7bc3b530, type: 3}
+      target: 1
     - rewardType: 10
       rewardDisplayName: Master Sphere
-      description: eeeeeeee
-      goal: 33
+      description: Achieve a 20-combo streak in a single game.
+      goal: 20
       progress: 2
       isCompleted: 0
-      rewardIcon: {fileID: 21300000, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
+      rewardIcon: {fileID: 21300000, guid: d634f46aa502693428be202c18f21b60, type: 3}
       target: 2

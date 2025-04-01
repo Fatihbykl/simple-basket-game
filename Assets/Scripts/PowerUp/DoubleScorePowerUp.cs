@@ -1,5 +1,6 @@
 using System;
 using Cysharp.Threading.Tasks;
+using Gameplay;
 using Managers;
 using UnityEngine;
 
@@ -10,17 +11,23 @@ namespace PowerUp
     {
         public override void Activate(SkillContext context)
         {
-            base.Activate(context);
-            ActivateScore(context.scoreManager);
+            if (isActive || count == 0) { return; }
+            count--;
+            
+            ActivateScore(context.scoreManager, context.ball);
+            StartTimer(30, () => DeactivateScore(context.scoreManager, context.ball));
         }
 
-        private async void ActivateScore(ScoreManager manager)
+        private void ActivateScore(ScoreManager manager, Ball ball)
         {
             isActive = true;
+            ball.doubleScoreText.SetActive(true);
             manager.scoreMultiplier = 2;
-            
-            await UniTask.WaitForSeconds(duration);
-            
+        }
+
+        private void DeactivateScore(ScoreManager manager, Ball ball)
+        {
+            ball.doubleScoreText.SetActive(false);
             manager.scoreMultiplier = 1;
             isActive = false;
         }

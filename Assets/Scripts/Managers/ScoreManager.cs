@@ -39,6 +39,8 @@ namespace Managers
         {
             gameOverscoreText.text = _score.ToString();
             gameOverMaxScoreText.text = GameDataManager.instance.data.BestScore.ToString();
+            GameDataManager.instance.data.GamesPlayed++;
+            GameDataManager.instance.data.TotalScore += _score;
         }
 
         private void AddScore()

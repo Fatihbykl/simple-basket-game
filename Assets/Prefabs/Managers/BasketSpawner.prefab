@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boundsXMin: -1.5
-  boundsXMax: 1.5
-  boundsYMin: -3
-  boundsYMax: 3
+  boundsXMax: 1
+  boundsYMin: -1.5
+  boundsYMax: 3.25
   basketPrefab: {fileID: 6952174701860839522, guid: effd85262f9362240bda5fff3a9e6d32, type: 3}
   minDistance: 2

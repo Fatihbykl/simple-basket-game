@@ -10,18 +10,21 @@ namespace PowerUp
     {
         public override void Activate(SkillContext context)
         {
-            base.Activate(context);
+            if (isActive || count == 0) { return; }
+            count--;
+            
             ActivateShield(context.ball);
+            StartTimer(30, () => DeactivateShield(context.ball));
         }
 
-        private async void ActivateShield(Ball ball)
+        private void ActivateShield(Ball ball)
         {
             isActive = true;
             ball.ActivateShield();
-            Debug.Log("Shield activated");
-            
-            await UniTask.WaitForSeconds(duration);
-            Debug.Log("Shield deactivated");
+        }
+        
+        private void DeactivateShield(Ball ball)
+        {
             isActive = false;
             ball.DeactivateShield();
         }

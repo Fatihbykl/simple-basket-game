@@ -49,7 +49,7 @@ public class DifficultyManager : MonoBehaviour
         {
             return;
         }
-        if (_level < 100)
+        if (_level < 270)
         {
             _availableDifficulties.Last().ApplyDifficulty(BasketSpawner.spawnedBaskets);
         }
@@ -63,27 +63,27 @@ public class DifficultyManager : MonoBehaviour
     {
         switch (_level)
         {
-            case 3:
+            case 20:
                 _availableDifficulties.Add(new BombDifficulty(bombPrefab));
                 _activeRotation = new RotationDifficulty();
                 rocketManager.ActivateRocket();
                 break;
-            case 6:
+            case 50:
                 _availableDifficulties.Add(new MovingDifficulty());
                 break;
-            case 9:
+            case 80:
                 _availableDifficulties.Add(new DisappearDifficulty(disappearEffectPrefab));
                 break;
-            case 12:
+            case 130:
                 _availableDifficulties.Add(new WheelDifficulty(wheelPrefab));
                 break;
-            case 15:
+            case 180:
                 _availableDifficulties.Add(new ShrinkingBasketsDifficulty());
                 break;
-            case 18:
+            case 230:
                 _availableDifficulties.Add(new FireBarrierDifficulty(fireBarrierPrefab, barrierPreparePrefab, barrierPrepareTime, barrierFireTime));
                 break;
-            case 21:
+            case 270:
                 GameTimer.Instance.StartTimer();
                 break;
         }

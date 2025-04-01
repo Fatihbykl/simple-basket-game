@@ -29,7 +29,12 @@ namespace Managers
         public int BestScore
         {
             get => _bestScore;
-            set => _bestScore = Mathf.Max(value, _bestScore);
+            set
+            {
+                if (_bestScore >= value) { return; }
+                _bestScore = value;
+                PlayGamesManager.instance.SubmitScore(_bestScore);
+            }
         }
 
         private int _gamesPlayed;
@@ -81,12 +86,14 @@ namespace Managers
         {
             EventManager.StopListening(EventNames.GameOver, OnGameOver);
             EventManager.StopListening(EventNames.DataLoaded, OnDataLoaded);
-
         }
 
         private void OnDataLoaded()
         {
-            if (EventManager.GetData(EventNames.DataLoaded) is not Data loadedData) { return; }
+            Data loadedData = (Data)EventManager.GetData(EventNames.DataLoaded);
+            Debug.Log("Unity: Loading data");
+            Debug.Log(loadedData);
+            if (loadedData == null) { return; }
             
             data.BestScore = loadedData.BestScore;
             data.TotalScore = loadedData.TotalScore;
@@ -132,14 +139,9 @@ namespace Managers
             }
         }
         
-        public string ToJson()
+        private string ToJson()
         {
             return JsonConvert.SerializeObject(data);
         }  
-        
-        private void OnApplicationQuit()
-        {
-            Debug.Log("Saved.");
-        }
     }
 }
