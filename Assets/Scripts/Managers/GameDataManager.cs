@@ -33,7 +33,9 @@ namespace Managers
             {
                 if (_bestScore >= value) { return; }
                 _bestScore = value;
+                #if UNITY_ANDROID
                 PlayGamesManager.instance.SubmitScore(_bestScore);
+                #endif
             }
         }
 
@@ -112,7 +114,9 @@ namespace Managers
         private void OnGameOver()
         {
             UpdateQuests();
+#if UNITY_ANDROID
             PlayGamesManager.instance.SaveData(ToJson());
+#endif
         }
 
         public void UpdateQuests()
