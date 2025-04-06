@@ -37,7 +37,7 @@ public class Notifications : MonoBehaviour
         };
         AndroidNotificationCenter.RegisterNotificationChannel(channel);
 
-        var fireTime = System.DateTime.Now.AddDays(1).Date.AddHours(9);
+        var fireTime = System.DateTime.Now.AddDays(1).Date.AddHours(21);
         
         var notification = new AndroidNotification()
         {

@@ -2112,7 +2112,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 7d87ea60a8f4d5f42a810e14f55a96ff, type: 3}
   m_Type: 0
-  m_PreserveAspect: 1
+  m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -2141,7 +2141,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AspectMode: 4
-  m_AspectRatio: 0.75
+  m_AspectRatio: 0.68
 --- !u!1001 &959357343
 PrefabInstance:
   m_ObjectHideFlags: 0
