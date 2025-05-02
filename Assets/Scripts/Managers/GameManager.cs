@@ -1,30 +1,34 @@
-using System;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TigerForge;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+namespace Managers
 {
-    private void Start()
+    public class GameManager : MonoBehaviour
     {
-        EventManager.StartListening(EventNames.NoHealth, OnNoHealth);
-        EventManager.StartListening(EventNames.Revived, OnRevived);
-    }
+        private void Start()
+        {
+            EventManager.StartListening(EventNames.NoHealth, OnNoHealth);
+            EventManager.StartListening(EventNames.Revived, OnRevived);
+        }
 
-    private void OnNoHealth()
-    {
-        DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0f, 1f).SetUpdate(true);
-    }
+        private void OnNoHealth()
+        {
+            DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0f, 1f).SetUpdate(true);
+        }
 
-    private void OnRevived()
-    {
-        Time.timeScale = 1;
-    }
+        private async void OnRevived()
+        {
+            await UniTask.WaitForSeconds(0.1f, ignoreTimeScale:true);
+            Debug.Log("Revived");
+            Time.timeScale = 0;
+        }
 
-    private void OnDestroy()
-    {
-        EventManager.StopListening(EventNames.NoHealth, OnNoHealth);
-        EventManager.StopListening(EventNames.Revived, OnRevived);
+        private void OnDestroy()
+        {
+            EventManager.StopListening(EventNames.NoHealth, OnNoHealth);
+            EventManager.StopListening(EventNames.Revived, OnRevived);
+        }
     }
 }

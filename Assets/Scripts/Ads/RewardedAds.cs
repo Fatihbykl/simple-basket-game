@@ -123,6 +123,7 @@ namespace Ads
             {
                 GrantReward();
                 LoadAd();
+                Time.timeScale = 0;
             };
             ad.OnAdFullScreenContentFailed += (AdError error) =>
             {

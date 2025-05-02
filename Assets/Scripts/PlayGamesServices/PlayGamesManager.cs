@@ -10,7 +10,6 @@ namespace PlayGamesServices
 {
     public class PlayGamesManager : MonoBehaviour
     {
-#if UNITY_ANDROID
         public static PlayGamesManager instance;
 
         void Awake()
@@ -164,7 +163,6 @@ namespace PlayGamesServices
                 PlayGamesPlatform.Instance.ShowLeaderboardUI(Keys.LEADERBOARD_ID);
             }
         }
-#endif
         
     }
 }

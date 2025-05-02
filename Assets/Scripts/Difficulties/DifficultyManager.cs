@@ -66,10 +66,10 @@ public class DifficultyManager : MonoBehaviour
             case 20:
                 _availableDifficulties.Add(new BombDifficulty(bombPrefab));
                 _activeRotation = new RotationDifficulty();
-                rocketManager.ActivateRocket();
                 break;
             case 50:
                 _availableDifficulties.Add(new MovingDifficulty());
+                rocketManager.ActivateRocket();
                 break;
             case 80:
                 _availableDifficulties.Add(new DisappearDifficulty(disappearEffectPrefab));
