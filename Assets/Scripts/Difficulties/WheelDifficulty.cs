@@ -7,8 +7,7 @@ namespace Difficulties
     public class WheelDifficulty : Difficulty
     {
         private GameObject _wheelPrefab;
-        private float _stepSize = 0.5f;
-        private float _minDistanceFromBaskets = 1.5f;
+        private float _offset = 1.5f;
         private List<GameObject> _currentBaskets;
 
         public WheelDifficulty(GameObject wheel)
@@ -19,7 +18,6 @@ namespace Difficulties
         public override void ApplyDifficulty(List<GameObject> baskets)
         {
             _currentBaskets = baskets;
-            Debug.Log(baskets.Count);
             SpawnObstacle();
         }
         
@@ -33,41 +31,22 @@ namespace Difficulties
             float randomX = Random.Range(leftLimit, rightLimit);
             float randomY = Random.Range(lowerLimit, upperLimit);
             Vector3 spawnPosition = new Vector3(randomX, randomY, 0f);
+            Vector3 basketPosition = _currentBaskets[0].transform.position;
+            
+            spawnPosition = new Vector3(basketPosition.x + _offset, basketPosition.y, basketPosition.z);
 
-            spawnPosition.x = FindNearestValidPosition(spawnPosition.x, leftLimit, rightLimit);
-
-            GameObject.Instantiate(_wheelPrefab, spawnPosition, _wheelPrefab.transform.rotation);
-        }
-
-        private float FindNearestValidPosition(float startX, float leftLimit, float rightLimit)
-        {
-            float x = startX;
-
-            for (int i = 0; i < 10; i++)
+            if (spawnPosition.x > rightLimit)
             {
-                if (!IsCollidingWithPots(x))
-                    return x;
+                spawnPosition.x = basketPosition.x - _offset;
+            }
 
-                x += _stepSize;
-                if (x > rightLimit)
-                {
-                    x = startX - _stepSize;
-                }
+            if (spawnPosition.x < leftLimit)
+            {
+                Debug.Log("Wheel couldn't placed!");
+                return;
             }
             
-            return Mathf.Clamp(startX, leftLimit, rightLimit);
-        }
-
-        private bool IsCollidingWithPots(float x)
-        {
-            foreach (var pota in _currentBaskets)
-            {
-                if (Mathf.Abs(x - pota.transform.position.x) < _minDistanceFromBaskets)
-                {
-                    return true;
-                }
-            }
-            return false;
+            GameObject.Instantiate(_wheelPrefab, spawnPosition, _wheelPrefab.transform.rotation);
         }
     }
 }

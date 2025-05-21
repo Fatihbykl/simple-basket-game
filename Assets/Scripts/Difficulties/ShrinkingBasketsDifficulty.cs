@@ -21,11 +21,10 @@ public class ShrinkingBasketsDifficulty : Difficulty
     {
         while (!token.IsCancellationRequested)
         {
-            await UniTask.WaitForSeconds(2f, cancellationToken: token);
+            await UniTask.WaitForSeconds(3f, cancellationToken: token);
             await ScaleBaskets(_shrinkedScale, 0.25f);
-            await UniTask.WaitForSeconds(2f, cancellationToken: token);
+            await UniTask.WaitForSeconds(1f, cancellationToken: token);
             await ScaleBaskets(_normalScale, 0.75f);
-            await UniTask.WaitForSeconds(2.75f, cancellationToken: token);
         }
     }
 
@@ -37,7 +36,7 @@ public class ShrinkingBasketsDifficulty : Difficulty
         }
         foreach (var basket in _baskets)
         {
-            basket.gameObject.transform.DOScale(scale, duration);
+            await basket.gameObject.transform.DOScale(scale, duration).ToUniTask();
         }
     }
 }

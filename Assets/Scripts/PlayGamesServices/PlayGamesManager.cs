@@ -17,7 +17,7 @@ namespace PlayGamesServices
             if (instance == null)
             {
                 instance = this;
-                DontDestroyOnLoad(gameObject);
+                //DontDestroyOnLoad(gameObject);
             }
             else
             {
@@ -32,19 +32,23 @@ namespace PlayGamesServices
 
         private void InitializePlayGames()
         {
-            PlayGamesPlatform.Activate();
-
-            PlayGamesPlatform.Instance.localUser.Authenticate(success =>
+            if (!PlayGamesPlatform.Instance.localUser.authenticated)
             {
-                if (success)
+                Debug.LogWarning("Play Games Platform authenticated");
+                PlayGamesPlatform.Activate();
+
+                PlayGamesPlatform.Instance.localUser.Authenticate(success =>
                 {
-                    LoadData();
-                }
-                else
-                {
-                    Debug.LogError("Failed to Authenticate Google Play");
-                }
-            });
+                    if (success)
+                    {
+                        LoadData();
+                    }
+                    else
+                    {
+                        Debug.LogError("Failed to Authenticate Google Play");
+                    }
+                });
+            }
         }
 
         private void LoadData()
@@ -99,6 +103,7 @@ namespace PlayGamesServices
 
         public void SaveData(string jsonData)
         {
+            Debug.Log("Save data called");
             if (!PlayGamesPlatform.Instance.localUser.authenticated)
             {
                 Debug.LogError("User not logged in!");
@@ -140,6 +145,7 @@ namespace PlayGamesServices
 
         public void SubmitScore(int score)
         {
+            Debug.Log("Submit score called");
             if (PlayGamesPlatform.Instance.localUser.authenticated)
             {
                 PlayGamesPlatform.Instance.ReportScore(score, Keys.LEADERBOARD_ID, (bool success) =>
@@ -158,6 +164,7 @@ namespace PlayGamesServices
 
         public void ShowLeaderboard()
         {
+            Debug.Log("Show leaderboard called");
             if (PlayGamesPlatform.Instance.localUser.authenticated)
             {
                 PlayGamesPlatform.Instance.ShowLeaderboardUI(Keys.LEADERBOARD_ID);

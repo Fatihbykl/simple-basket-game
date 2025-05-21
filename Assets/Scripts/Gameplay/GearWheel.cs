@@ -5,11 +5,11 @@ using UnityEngine;
 public class GearWheel : MonoBehaviour
 {
     private float _wheelRotationSpeed = 400f;
-    private float _bounceForce = 10f;
+    private float _bounceForce = 20f;
 
     private void Start()
     {
-        EventManager.StartListening(EventNames.Basket, OnLevelUpgraded);
+        EventManager.StartListening(EventNames.LevelUpgraded, OnLevelUpgraded);
     }
 
     void Update()

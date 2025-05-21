@@ -9,8 +9,13 @@ namespace Gameplay
         {
             if (other.CompareTag("Ball"))
             {
-                EventManager.EmitEventData(EventNames.fireBarrierCollided, other.gameObject.transform.position);
-                gameObject.SetActive(false);
+                var ballRb = other.gameObject.GetComponent<Rigidbody>();
+                if (ballRb != null)
+                {
+                    Vector2 hitDirection = (other.transform.position - transform.position).normalized;
+
+                    ballRb.AddForce(hitDirection * 40f, ForceMode.Impulse);
+                }
             }
         }
     }
